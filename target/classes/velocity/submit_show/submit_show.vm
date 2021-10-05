@@ -1,0 +1,69 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+<form id="submitShowForm" method="post">
+    #if($currentUser)
+    	#if($submission)
+        <p class="good notification">Thank you for your submission</p>
+        #elseif($submission == false)
+        <p class="bad notification">Your submission cannot be processed. Please try again</p>
+        #end
+        
+    	<h1>Submit new show</h1>
+	    <h2>Title</h2>
+	    <input type="text" name="title" placeholder="Name of a show" value="" required>
+	    <hr>
+	    
+	    <h2>Released year</h2>
+	    <input type="text" name="year" placeholder="Released year (e.g. 2018)" value="" required>
+	    <hr>
+	  
+	    <h2>Type</h2>
+	    <input type="radio" id="tvShow" name="showType" value="tvShow">
+	    <label for="tvShow">TV Show</label><br>
+		<input type="radio" id="movie" name="showType" value="movie">
+	    <label for="movie">Movie</label><br>
+	    <hr>
+	    
+	    <h2>Genre</h2>
+	    <select name="genre">
+		    <option value="Action">Action</option>
+		    <option value="Comedy">Comedy</option>
+		    <option value="Horror">Horror</option>
+		    <option value="Fantasy">Fantasy</option>
+		    <option value="Adventure">Adventure</option>
+		    <option value="Mystery">Mystery</option>
+		    <option value="Romance">Romance</option>
+	    </select>
+	    <hr>
+	    
+	    <h2>Show length</h2>
+	    <select name ="hours">
+		    #foreach($hour in [0..5])
+		    	<option value="$hour">$hour</option>
+		    #end
+	    </select>
+	    <label>hours</label>
+	    
+	    <select name ="mins">
+		    #foreach($min in [1..59])
+		    	<option value="$min">$min</option>
+		    #end
+	    </select>
+	    <label>minutes</label><br>
+	    <hr>	
+	   
+	    <h2>Production Company</h2>
+	    <select name="proCo">
+	    	#foreach($pc in $proCos)
+			    <option value="$pc.getID()">$pc.getName()</option>
+			#end
+	    </select>
+	    <hr>   
+	     
+	    <input type="submit" value="Submit">
+    #else
+        <p class="bad notification">please login to submit new entry</p>
+    #end
+    
+</form>
+#end

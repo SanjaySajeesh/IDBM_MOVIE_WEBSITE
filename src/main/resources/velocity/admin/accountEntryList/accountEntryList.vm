@@ -1,0 +1,65 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+#if($currentUserType != "ADMIN")
+	<h1>Access denied.</h2>
+#else
+	<h1>Submitted account entries</h1>
+	#foreach($account in $pendingAccount)
+	<table border="1" style="width:100%">
+		<tr>
+			<th>Username</th>
+			<td>$account.getUsername()</td>
+		</tr>
+		<tr>
+			<th>Account Type</th>
+			<td>$account.getType()</td>
+		</tr>
+		<tr>
+			<th>Email</th>
+			<td>$account.getEmail()</td>
+		</tr>
+		<tr>
+			<th>Name</th>
+			<td>$account.getFirstName() $account.getLastName()</td>
+		</tr>
+		<tr>
+			<th>Country</th>
+			<td>$account.getCountry()</td>
+		</tr>
+		<tr>
+			<th>Postal Code</th>
+			<td>$account.getPostalCode()</td>
+		</tr>
+		<tr>
+			<th>Phone number</th>
+			<td>$account.getPhoneNum()</td>
+		</tr>
+		<tr>
+			<th>Organisation</th>
+			<td>$account.getPublicName()</td>
+		</tr>
+		<tr>
+			<th>Status</th>
+			<td>
+				<form method="post" >
+					<input type="hidden" name="account_user" value="$account.getUsername()">
+					<table>
+						<td>
+							<select name="statusUpdate">
+								<option SELECTED></option>
+								<option>Approve</option>								
+								<option>Reject/Delete</option>
+							</select>
+						</td>
+						<td>
+							<input type="submit" value="Submit">
+						</td>
+					</table>
+				</form>
+			</td>		
+		</tr>
+	</table>
+	<p></p>	
+	#end
+#end
+#end

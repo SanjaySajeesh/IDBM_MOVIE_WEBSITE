@@ -1,0 +1,85 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+#if($currentUserType != "ADMIN")
+	<h1>Access denied.</h2>
+#else
+	<h1>Submitted page entries</h1>
+	<form id="/admin/showEntryListFiltered" method="post" action="/admin/showEntryListFiltered">
+	<table>
+		<tr>
+			<td>
+				Filter by status: 
+			</td>
+			<td>
+				<select name="filterByStatus">
+					#if($filterByStatus)
+						<option SELECTED HIDDEN>$filterByStatus</option>
+					#else
+						<option SELECTED HIDDEN>No filter</option>
+					#end
+					<option>No filter</option>
+					<option>VISIBLE</option>
+					<option>SUBMITTED</option>
+					<option>UNDER INVESTIGATION</option>
+					<option>SUSPENDED</option>
+					<option>PENDING</option>
+					<option>REJECTED</option>
+				</select>
+			</td>
+			<td>
+				<input type="submit" value="Filter">
+			</td>
+		</tr>
+	</table>
+	</form>
+	<table border="1" style="width:100%">
+		<tr>
+			<th>ID</th>
+			<th>Title</th>
+			<th>Year</th>
+			<th>Author</th>
+			<th>Type</th>
+			<th>Status</th>
+			<th>Update</th>
+		</tr>
+		#foreach($entry in $entries)
+			<tr>
+				<td>$entry.id</td>
+				<td><a href="/show/$entry.id">$entry.title</a></td>
+				<td>$entry.year</td>
+				<td>$entry.author.username</td>
+				<td>$entry.author.type</td>
+				<td>$entry.getEntryStatus()</td>
+				<td>
+					<form id="/admin/showEntryUpdateStatus" method="post" action="/admin/showEntryUpdateStatus">
+						<input type="hidden" name="showid" value="$entry.id">
+						<table>
+							<td>
+								<select name="statusUpdate">
+									<option SELECTED></option>
+									#if(($entry.getEntryStatus() != "VISIBLE") && ($entry.getEntryStatus() != "REJECTED"))
+										<option>Approve</option>
+										<option>Reject</option>
+									#end
+									#if(($entry.getEntryStatus() != "REJECTED") && ($entry.getEntryStatus() != "UNDER INVESTIGATION"))
+										#if($entry.getEntryStatus() != "PENDING")
+											<option>Mark Pending</option>
+										#end
+										#if($entry.getEntryStatus() != "SUSPENDED")
+											<option>Suspend</option>
+										#end
+									#end
+									<option>Delete</option>
+								</select>
+							</td>
+							<td>
+								<input type="submit" value="Submit">
+							</td>
+						</table>
+					</form>
+				</td>
+			</tr>
+		#end
+	</table>
+#end
+#end

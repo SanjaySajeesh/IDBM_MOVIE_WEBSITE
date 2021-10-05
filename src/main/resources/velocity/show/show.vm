@@ -1,0 +1,109 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+#if($show)
+	#if(($show.getEntryStatus() != "VISIBLE") || ($currentUserType == "ADMIN"))
+		<h2>STATUS: $show.getEntryStatus()</h2>
+		#if($currentUserType == "ADMIN")
+			<form id="/admin/showEntryUpdateStatusFromPage" method="post" action="/admin/showEntryUpdateStatusFromPage">
+						<input type="hidden" name="showid" value="$show.id">
+						<table>
+							<td>
+								<select name="statusUpdate">
+									<option SELECTED></option>
+									#if(($show.getEntryStatus() != "VISIBLE") && ($show.getEntryStatus() != "REJECTED"))
+										<option>Approve</option>
+										<option>Reject</option>
+									#end
+									#if(($show.getEntryStatus() != "REJECTED") && ($show.getEntryStatus() != "UNDER INVESTIGATION"))
+										#if($show.getEntryStatus() != "PENDING")
+											<option>Mark Pending</option>
+										#end
+										#if($show.getEntryStatus() != "SUSPENDED")
+											<option>Suspend</option>
+										#end
+									#end
+									<option>Delete</option>
+								</select>
+							</td>
+							<td>
+								<input type="submit" value="Submit">
+							</td>
+						</table>
+					</form>
+		#end
+		<hr>
+	#end
+	
+    <h1>$show.getTitle() 
+	    #if($currentUserType == "PCO" && $show.getProCo().equals($currentUser.getPublicName()))
+	    		<a href="/edit/$show.getId()" > Edit</a>
+	    #end 
+    </h1>
+   
+    #if($show.isMovie())
+    	<p>$show.getYear()|$show.getGenre()|$show.getLength()|Movie#if($avgRating)|$avgRating stars (avg. user rating)#else|No user ratings#end</p>
+    #elseif($show.isSeries())
+        <p>$show.getYear()|$show.getGenre()|$show.getLength()|Series#if($avgRating)|$avgRating stars (avg. user rating)#else|No user ratings#end</p>
+    #else
+    	<p>$show.getYear()|$show.getGenre()|$show.getLength()#if($avgRating)|$avgRating stars (avg. user rating)#else|No user ratings#end</p>
+    #end
+    
+    <div class="row row-2">
+	    <div class="col">
+	    	<hr>
+		    <h2>Cast and crews </h2>
+		    #foreach($role in $creditsRoll)
+				<li><a class="person" href="/person/$role.getPerson().getPersonId()" >$role.getPerson().getFullName()</a> acted as $role.getCharacter()</li>
+		    #end
+		    <hr>
+		    <h2>Production Company</h2>
+		    <li>$show.getProCo()</li>
+		    <hr>
+
+	    </div>
+	    <div class="col">
+	        <img src="$show.getPoster()" alt="$show.title">
+	    </div>
+    </div>
+    
+    <div>
+    	<hr>
+    	<h2>User reviews</h2>
+    	#if($userReviews)
+	    	#foreach($userReview in $userReviews)
+	    		#if($userReview.review)
+		    		<p>$userReview.getPublicName() on $userReview.getDate() #if($userReview.rating) | Rating: $userReview.rating #end</p>
+		    		<p>$userReview.getReview()</p>
+		    		<hr>
+		    	#end
+    		#end
+    	#else
+    		<p>No review for the show yet</p>
+    	#end
+    	
+    	#if($currentUser)
+    		<form id="/leaveReview" method="post" action="/leaveReview">
+		
+		    <label>Leave a review</label>
+		    <input type="text" name="review" placeholder="Review">		    
+		  
+		    <label for="Rating">Leave a rating (out of 5)</label>
+			<select id="rating" name="rating">
+				<option SELECTED value="-1"></option>
+			    <option>1</option>
+			    <option>2</option>
+			    <option>3</option>
+			    <option>4</option>
+			    <option>5</option>
+			</select>
+		    <input type="hidden", name = "showID", value= "$show.getId()" >
+		    <input type="submit" value="Submit">
+			</form>
+    	#end
+		
+    </div>
+
+#else
+    <h1>Show not found</h1>
+    #end
+#end

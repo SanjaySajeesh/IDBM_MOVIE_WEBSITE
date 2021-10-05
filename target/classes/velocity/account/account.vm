@@ -1,0 +1,21 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+	#if ($account)
+	<h1>Username: $currentUser</h1>
+	<h2>Details:</h2>
+	<b>
+	<p>Account type: $account.getType()</p>
+	
+	<p>First name: $account.getFirstName()</p>
+	<p>Last name: $account.getLastName()</p>
+	<p>Country: $account.getCountry()</p>
+	<p>Gender: $account.getGender()</p>
+	</b>
+	
+	#if($account.getType() == "PCO" || $account.getType() == "CRITIC")
+	<p>Email: $account.getEmail()</p>
+	<p>Phone Number: $account.getPhoneNum()</p>
+	<p>Organisation: $account.getPublicName()</p>
+	#end
+	#end
+#end

@@ -1,0 +1,80 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+<form id="loginForm" method="post">
+    	#if($signUpSubmission)
+        <p class="good notification">Thank you for your submission</p>
+        #elseif($signUpSubmission == false)
+        	#if($passwordMismatch)
+    	        <p class="bad notification">Password Mismatch. Please try again</p>
+	    	#end
+	    	#if($noPCo)
+	            <p class="bad notification">The Production Company does not exist in our database. Please try again</p>   
+        	#end
+        	#if($usernameExist)
+	            <p class="bad notification">Username already exists. Please try another username</p>   
+        	#end
+        <p class="bad notification">Your submission cannot be processed. Please try again</p>
+        #end
+        
+    	<h1>Submit new account</h1>
+    	
+    	<h2>Personal detail</h2>
+    	
+	    <label>First Name</label>
+	    <input type="text" name="firstname" placeholder="First name" value="" required>
+	    <label>Last Name</label>
+	    <input type="text" name="lastname" placeholder="Last name" value="" required>
+
+	    <label>Gender</label>
+	    <select name="gender">
+		    <option value="Female">Female</option>
+		    <option value="Male">Male</option>
+	    </select>
+	    <p></p>
+	    
+	    <label>Year of Birth</label>
+	    <input type="number" name="year" placeholder="Year of Birth (e.g. 1990)" value="" required>
+	    <hr>
+	    
+	    <h2>Address</h2>
+	    
+	    <label>Country</label>
+	    <input type="text" name="country" placeholder="Country (e.g. Australia)" value="" required>
+	    
+	    <label>Postal Code</label>
+	    <input type="number" name="postalcode" placeholder="Postal code (e.g. 98104)" value="" required>
+	    <hr>
+	    
+	    <h2>Contact</h2>
+	    <label>Email</label>	    
+	    <input type="email" name="email" placeholder="Email (e.g. example@mail.com)" value="" required>
+	    <hr>
+	    
+	    <h2>Organisation detail</h2>
+	    
+	    <label>Name of Organisation</label>
+	    <input type="text" name="organisation" placeholder="Name of Organisation" value="" required>
+	    
+	    <label>Phone number</label>
+	    <input type="number" name="phoneNum" placeholder="Phone number (e.g. 0412345678)" value="" required>
+	    <hr>
+	    
+	    <h2>Account Detail</h2>
+	    <label>Username</label>
+	    <input type="text" name="username" placeholder="Username" value="" required>
+	    <label>Password</label>
+		<input type="password" name="password" placeholder="Password" value="" required>
+		<input type="password" name="confirm_password" placeholder="Confirm Password" value="" required>
+		<hr>
+    
+	    <h2>Account Type</h2>
+	    <select name="type">
+		    <option value="PCO">Production Company</option>
+		    <option value="CRITIC">Critics</option>
+	    </select>
+	    <hr>
+	    
+	    <input type="submit" value="Submit">
+    
+</form>
+#end

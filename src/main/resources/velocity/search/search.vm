@@ -1,0 +1,31 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+
+ <h1>Search Result</h1>
+     #if($searchResults)
+     	#if($actorName)
+     		<p>Search Keyword: $actorName</p>
+     		#foreach($result in $searchResults)
+ 				<b><p>Shows starred by: $result.getKey().getFullName()</p></b>
+     			#foreach($show in $result.getValue())
+     				<li><a class="show" href="/show/$show.getId()" >$show.getTitle()</a></li>
+     			#end
+     		#end
+     		
+     	#elseif($showTitle)
+     		<p>Search Keyword: $showTitle</p>
+     		#foreach($result in $searchResults)
+    		<li><a class="show" href="/show/$result.getId()" >$result.getTitle()</a></li>
+       		#end
+     	#end
+        
+    #else
+    	#if($showTitle)
+    		#set($keyword=$showTitle)
+    	#elseif($actorName)
+    		#set($keyword=$actorName)
+    	#end
+    	<h1>No result found for $keyword</h2>
+    #end
+    
+#end

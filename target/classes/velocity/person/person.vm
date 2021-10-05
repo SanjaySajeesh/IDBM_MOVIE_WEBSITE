@@ -1,0 +1,22 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+#if($person)
+    <h1>$person.getFullName()</h1>
+     <p>$person.getRole()| Born in $person.getBirthdate()</p>
+        
+    <div class="row row-2">
+	    <div class="col">
+	    	<hr>
+		    <h2>Biography</h2>
+		    <p>$person.getBio()</p>
+		    <hr>
+	    </div>
+	    <div class="col">
+	        <img src="$person.getImg()" alt="$person.getFullName()">
+	    </div>
+    </div>
+
+#else
+    <h1>Person not found</h1>
+    #end
+#end

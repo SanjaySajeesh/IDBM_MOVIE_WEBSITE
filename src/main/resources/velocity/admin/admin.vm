@@ -1,0 +1,9 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+#if($currentUserType != "ADMIN")
+	<h1>Access denied.</h2>
+#else
+	<h2><a href="/admin/showEntryList">Show Entry Submission list view</a><h2>
+	<h2><a href="/admin/accountEntryList">Account Entry Submission list view</a><h2>
+#end
+#end

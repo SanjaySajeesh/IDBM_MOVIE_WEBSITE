@@ -1,0 +1,38 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+<form id="loginForm">
+    #if($authenticationFailed)
+        <p class="bad notification">Username or Password incorrect. Please try again.</p>
+    #elseif($authenticationSucceeded)
+        <p class="good notification">Login Successful. Enjoy!</p>
+    #elseif($loggedOut)
+        <p class="notification">You've logged out. See ya!</p>
+    #end
+</form>
+    #if(!$currentUser)
+		<form id="loginForm" method="post">
+		
+		    <h1>Logging In</h1>
+		    <label>Username</label>
+		    <input type="text" name="username" placeholder="Username" value="" required>
+		    <label>Password</label>
+			<input type="password" name="password" placeholder="Password" value="" required>
+		    #if($loginRedirect)
+		        <input type="hidden" name="loginRedirect" value="$loginRedirect">
+		    #end
+		    <input type="submit" value="Log In">
+		</form>
+		
+		<style>
+			p {text-align: center;}
+		</style>
+		<p><a class="show" href="/sign_up" >Sign up as Production Company or Critics user</a></p>
+	#end	
+		
+#if($currentUser)
+	<h2>Logged in as: $currentUser</h2>
+	<form id="loginForm" method="post" action="/logout">
+        <input type="submit" value="Log Out">
+    </form>
+#end
+#end
